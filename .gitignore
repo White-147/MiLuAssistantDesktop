@@ -1,0 +1,9 @@
+node_modules/
+python-env/
+app/
+docs-dist/
+release/
+build/
+.dev-mode
+*.log
+dist/

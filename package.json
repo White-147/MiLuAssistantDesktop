@@ -1,0 +1,72 @@
+{
+  "name": "milu-desktop",
+  "version": "1.0.0-b1",
+  "description": "MiLu Desktop — Your Personal AI Assistant",
+  "main": "src/main.js",
+  "author": "MiLu Team",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "dist:dir": "electron-builder --win --dir",
+    "dist:portable": "npx electron-builder --win --dir -c.directories.output=app && node scripts/post-build-portable.js"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "io.agentscope.milu",
+    "productName": "MiLu Desktop",
+    "copyright": "Copyright © 2026 AgentScope",
+    "directories": {
+      "output": "D:/code"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "python-env/",
+        "to": "python-env",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "docs-dist/",
+        "to": "docs",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "executableName": "MiLu",
+      "artifactName": "MiLu-Setup-${version}.${ext}",
+      "signAndEditExecutable": false,
+      "forceCodeSigning": false
+    },
+    "toolsets": {
+      "winCodeSign": "1.1.0"
+    },
+    "afterSign": [],
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false,
+      "shortcutName": "MiLu Desktop",
+      "installerLanguages": ["zh_CN", "en_US"],
+      "language": "2052"
+    }
+  }
+}
