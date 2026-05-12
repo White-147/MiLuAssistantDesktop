@@ -2,15 +2,15 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-class MiLuLauncher
+class MiLuAssistantDesktopLauncher
 {
     static void Main()
     {
         string dir = AppDomain.CurrentDomain.BaseDirectory;
-        string exe = Path.Combine(dir, "app", "win-unpacked", "MiLu.exe");
+        string exe = Path.Combine(dir, "app", "win-unpacked", "MiLuAssistantDesktop.exe");
         if (!File.Exists(exe))
         {
-            Console.Error.WriteLine("MiLu.exe not found: " + exe);
+            Console.Error.WriteLine("MiLuAssistantDesktop.exe not found: " + exe);
             Environment.Exit(1);
         }
         var psi = new ProcessStartInfo

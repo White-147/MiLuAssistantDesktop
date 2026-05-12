@@ -10,7 +10,7 @@ $ProjectRoot = (Get-Item $PSScriptRoot).Parent.FullName
 $PythonEnv   = Join-Path $ProjectRoot "python-env"
 
 Write-Host "=========================================="
-Write-Host " MiLu Desktop - Dev Setup"
+Write-Host " MiLuAssistantDesktop - Dev Setup"
 Write-Host "=========================================="
 
 # Find the Python that has milu installed
@@ -20,7 +20,7 @@ Write-Host "System Python: $pythonExe"
 # Verify milu is installed
 & $pythonExe -c "from milu.__version__ import __version__; print(f'milu {__version__} found')"
 if ($LASTEXITCODE -ne 0) {
-  throw "milu not found in Python environment. Please install it first: pip install -e D:\code\MiLu"
+  throw "milu not found in Python environment. Please install it first: pip install -e D:\code\MiLuAssistantWeb"
 }
 
 # Create python-env directory with a marker file

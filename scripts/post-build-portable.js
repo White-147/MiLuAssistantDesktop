@@ -1,6 +1,6 @@
 /**
  * Post-build script for portable mode.
- * Compiles MiLu.exe (launcher) and uninstallerMiLu.exe using .NET csc.exe,
+ * Compiles MiLuAssistantDesktop.exe (launcher) and uninstallerMiLuAssistantDesktop.exe using .NET csc.exe,
  * with the project icon embedded. These tiny exes delegate to app/win-unpacked/.
  */
 const { execFileSync } = require("child_process");
@@ -9,7 +9,7 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const UNPACKED = path.join(ROOT, "app", "win-unpacked");
-const EXE_NAME = "MiLu.exe";
+const EXE_NAME = "MiLuAssistantDesktop.exe";
 const SRC_EXE = path.join(UNPACKED, EXE_NAME);
 
 if (!fs.existsSync(SRC_EXE)) {
@@ -42,23 +42,23 @@ console.log(`[post-build] Using csc: ${csc}`);
 // Compile launcher
 execFileSync(csc, [
   "/target:winexe",
-  `/out:${path.join(ROOT, "MiLu.exe")}`,
+  `/out:${path.join(ROOT, "MiLuAssistantDesktop.exe")}`,
   iconArg,
   path.join(ROOT, "scripts", "launcher.cs"),
 ].filter(Boolean), { stdio: "inherit" });
-console.log("[post-build] Compiled MiLu.exe");
+console.log("[post-build] Compiled MiLuAssistantDesktop.exe");
 
 // Compile uninstaller
 execFileSync(csc, [
   "/target:winexe",
-  `/out:${path.join(ROOT, "uninstallerMiLu.exe")}`,
+  `/out:${path.join(ROOT, "uninstallerMiLuAssistantDesktop.exe")}`,
   iconArg,
   "/reference:System.Windows.Forms.dll",
   path.join(ROOT, "scripts", "uninstaller.cs"),
 ].filter(Boolean), { stdio: "inherit" });
-console.log("[post-build] Compiled uninstallerMiLu.exe");
+console.log("[post-build] Compiled uninstallerMiLuAssistantDesktop.exe");
 
 console.log("\n[post-build] Portable build ready!");
-console.log(`  Launch:     MiLu.exe`);
-console.log(`  Uninstall:  uninstallerMiLu.exe`);
+console.log(`  Launch:     MiLuAssistantDesktop.exe`);
+console.log(`  Uninstall:  uninstallerMiLuAssistantDesktop.exe`);
 console.log(`  Real app:   app\\win-unpacked\\${EXE_NAME}`);

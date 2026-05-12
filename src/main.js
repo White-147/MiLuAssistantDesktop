@@ -23,7 +23,7 @@ const backendReadyPromise = new Promise((r) => { _backendReadyResolve = r; });
 function getAppDataRoot() {
   return path.join(
     process.env.LOCALAPPDATA || path.join(require("os").homedir(), "AppData", "Local"),
-    "MiLu Desktop"
+    "MiLuAssistantDesktop"
   );
 }
 
@@ -218,7 +218,7 @@ function startBackend(port) {
   const pythonExe = getPythonExe();
   if (!fs.existsSync(pythonExe)) {
     dialog.showErrorBox(
-      "MiLu Desktop",
+      "MiLuAssistantDesktop",
       `Python environment not found.\n\nExpected: ${pythonExe}`
     );
     app.quit();
@@ -252,7 +252,7 @@ function startBackend(port) {
     console.log(`[MiLu] backend exited with code ${code}`);
     backendProcess = null;
     if (!isQuitting) {
-      dialog.showErrorBox("MiLu Desktop", `Backend process exited unexpectedly (code ${code}).`);
+      dialog.showErrorBox("MiLuAssistantDesktop", `Backend process exited unexpectedly (code ${code}).`);
       app.quit();
     }
   });
@@ -278,7 +278,7 @@ function killBackend() {
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1360, height: 860, minWidth: 900, minHeight: 600,
-    title: "MiLu Desktop",
+    title: "MiLuAssistantDesktop",
     icon: path.join(__dirname, "..", "assets", "icon.ico"),
     show: false,
     webPreferences: {
@@ -317,12 +317,12 @@ function createTray() {
 
   tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
-    { label: "Show MiLu", click: () => { if (mainWindow) { mainWindow.show(); mainWindow.focus(); } } },
+    { label: "Show MiLuAssistantDesktop", click: () => { if (mainWindow) { mainWindow.show(); mainWindow.focus(); } } },
     { label: `Open in Browser (port ${backendPort})`, click: () => shell.openExternal(`http://${BACKEND_HOST}:${backendPort}`) },
     { type: "separator" },
     { label: "Quit", click: () => { isQuitting = true; app.quit(); } },
   ]);
-  tray.setToolTip("MiLu Desktop");
+  tray.setToolTip("MiLuAssistantDesktop");
   tray.setContextMenu(contextMenu);
   tray.on("double-click", () => { if (mainWindow) { mainWindow.show(); mainWindow.focus(); } });
 }

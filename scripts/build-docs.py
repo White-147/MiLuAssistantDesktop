@@ -1,9 +1,9 @@
-"""Pre-render MiLu Chinese documentation to a self-contained static HTML file.
+"""Pre-render MiLuAssistantDesktop Chinese documentation to a static HTML file.
 
 Usage:
     python scripts/build-docs.py <markdown_file> <output_dir>
 
-The script reads the all-in-one markdown, applies MiLu branding, renders
+The script reads the all-in-one markdown, applies MiLuAssistantDesktop branding, renders
 it to HTML with the same styles/TOC/scroll-spy as the backend, and writes
 the result to <output_dir>/milu-docs-zh.html.  Images referenced by the
 markdown are expected in an ``images/`` subdirectory next to the markdown
@@ -246,11 +246,11 @@ def build_html(toc: list[dict], rendered: str) -> str:
     return (
         "<!doctype html><html><head><meta charset='utf-8'/>"
         "<meta name='viewport' content='width=device-width, initial-scale=1'/>"
-        "<title>MiLu</title>"
+        "<title>MiLuAssistantDesktop</title>"
         f"<style>{css}</style></head><body>"
         "<div class='docs-layout'>"
         "<aside class='docs-sidebar'>"
-        "<h2 class='docs-sidebar-title'>MiLu 文档</h2>"
+        "<h2 class='docs-sidebar-title'>MiLuAssistantDesktop Docs</h2>"
         f"<ul class='docs-toc'>{toc_html}</ul>"
         "</aside>"
         "<main class='docs-main'>"

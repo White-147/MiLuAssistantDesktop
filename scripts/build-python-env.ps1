@@ -1,23 +1,32 @@
 # Build a relocatable python-env using Python embeddable package + pip.
-# No conda required. Run from the MiLuEXE repo root:
+# No conda required. Run from the MiLuAssistantDesktop repo root:
 #   powershell -ExecutionPolicy Bypass -File scripts\build-python-env.ps1
 #
 # This downloads the Python 3.11 embeddable package, installs pip,
-# then pip-installs MiLu and all its dependencies.
+# then pip-installs MiLuAssistantWeb and all its dependencies.
 
 $ErrorActionPreference = "Stop"
 
 $ProjectRoot = (Get-Item $PSScriptRoot).Parent.FullName
-$MiLuRoot    = (Get-Item "$ProjectRoot\..\MiLu").FullName
+$CandidateRoots = @(
+  "$ProjectRoot\..\MiLuAssistantWeb",
+  "$ProjectRoot\..\MiLu_HTML",
+  "$ProjectRoot\..\MiLu"
+)
+$MiLuRoot = $CandidateRoots | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $MiLuRoot) {
+  throw "MiLuAssistantWeb source not found. Expected one of: $($CandidateRoots -join ', ')"
+}
+$MiLuRoot = (Get-Item $MiLuRoot).FullName
 $PythonEnv   = Join-Path $ProjectRoot "python-env"
 $BuildDir    = Join-Path $ProjectRoot "build"
 $PY_VERSION  = "3.11.9"
 
 Write-Host "=========================================="
-Write-Host " MiLu Desktop - Build Python Environment"
+Write-Host " MiLuAssistantDesktop - Build Python Environment"
 Write-Host " (embeddable Python, no conda needed)"
 Write-Host "=========================================="
-Write-Host "MiLu source : $MiLuRoot"
+Write-Host "MiLuAssistantWeb source : $MiLuRoot"
 Write-Host "Target env   : $PythonEnv"
 Write-Host "Python       : $PY_VERSION"
 Write-Host ""

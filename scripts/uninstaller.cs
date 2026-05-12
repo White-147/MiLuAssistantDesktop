@@ -3,16 +3,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-class MiLuUninstaller
+class MiLuAssistantDesktopUninstaller
 {
     [STAThread]
     static void Main()
     {
         var result = MessageBox.Show(
-            "确定要卸载 MiLu Desktop 吗？\n\n" +
+            "确定要卸载 MiLuAssistantDesktop 吗？\n\n" +
             "这将删除程序文件。\n" +
-            "用户数据（%LOCALAPPDATA%\\MiLu Desktop）不会被删除。",
-            "MiLu Desktop - 卸载",
+            "用户数据（%LOCALAPPDATA%\\MiLuAssistantDesktop）不会被删除。",
+            "MiLuAssistantDesktop - 卸载",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
@@ -22,8 +22,8 @@ class MiLuUninstaller
         string baseDir = AppDomain.CurrentDomain.BaseDirectory;
         string appDir = Path.Combine(baseDir, "app");
 
-        // Kill running MiLu processes
-        foreach (var p in Process.GetProcessesByName("MiLu"))
+        // Kill running MiLuAssistantDesktop processes
+        foreach (var p in Process.GetProcessesByName("MiLuAssistantDesktop"))
         {
             try { p.Kill(); } catch { }
         }
@@ -36,14 +36,14 @@ class MiLuUninstaller
         }
 
         // Remove launcher
-        string launcher = Path.Combine(baseDir, "MiLu.exe");
+        string launcher = Path.Combine(baseDir, "MiLuAssistantDesktop.exe");
         if (File.Exists(launcher))
         {
             try { File.Delete(launcher); } catch { }
         }
 
         // Remove shortcuts
-        foreach (var f in new[] { "MiLu.lnk", "MiLu.cmd", "uninstallerMiLu.cmd", "uninstallerMiLu.lnk" })
+        foreach (var f in new[] { "MiLuAssistantDesktop.lnk", "MiLuAssistantDesktop.cmd", "uninstallerMiLuAssistantDesktop.cmd", "uninstallerMiLuAssistantDesktop.lnk" })
         {
             string fp = Path.Combine(baseDir, f);
             if (File.Exists(fp)) try { File.Delete(fp); } catch { }
@@ -53,8 +53,8 @@ class MiLuUninstaller
             "卸载完成！\n\n" +
             "如需删除用户数据，请手动删除：\n" +
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-            "\\MiLu Desktop",
-            "MiLu Desktop - 卸载",
+            "\\MiLuAssistantDesktop",
+            "MiLuAssistantDesktop - 卸载",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
 

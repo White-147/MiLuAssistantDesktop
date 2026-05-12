@@ -1,9 +1,9 @@
 {
-  "name": "milu-desktop",
-  "version": "1.0.0-b1",
-  "description": "MiLu Desktop — Your Personal AI Assistant",
+  "name": "milu-assistant-desktop",
+  "version": "1.0.1",
+  "description": "MiLuAssistantDesktop - Windows installer edition of MiLuAssistantWeb",
   "main": "src/main.js",
-  "author": "MiLu Team",
+  "author": "White-147",
   "license": "Apache-2.0",
   "scripts": {
     "start": "electron .",
@@ -16,9 +16,9 @@
     "electron-builder": "^26.0.0"
   },
   "build": {
-    "appId": "io.agentscope.milu",
-    "productName": "MiLu Desktop",
-    "copyright": "Copyright © 2026 AgentScope",
+    "appId": "io.white147.milu.assistant.desktop",
+    "productName": "MiLuAssistantDesktop",
+    "copyright": "Copyright © 2026 White-147",
     "directories": {
       "output": "D:/code"
     },
@@ -46,8 +46,8 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "executableName": "MiLu",
-      "artifactName": "MiLu-Setup-${version}.${ext}",
+      "executableName": "MiLuAssistantDesktop",
+      "artifactName": "MiLuAssistantDesktop-Setup-${version}.${ext}",
       "signAndEditExecutable": false,
       "forceCodeSigning": false
     },
@@ -64,7 +64,7 @@
       "installerHeaderIcon": "assets/icon.ico",
       "createDesktopShortcut": false,
       "createStartMenuShortcut": false,
-      "shortcutName": "MiLu Desktop",
+      "shortcutName": "MiLuAssistantDesktop",
       "installerLanguages": ["zh_CN", "en_US"],
       "language": "2052"
     }

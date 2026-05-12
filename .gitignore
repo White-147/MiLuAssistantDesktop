@@ -7,3 +7,5 @@ build/
 .dev-mode
 *.log
 dist/
+MiLu*.exe
+uninstallerMiLu*.exe

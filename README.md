@@ -1,75 +1,64 @@
-# MiLu Desktop
+# MiLuAssistantDesktop
 
-基于 Electron + electron-builder + NSIS 的 MiLu 桌面应用。将 MiLu 的 Python 后端打包在 Electron 壳中，提供原生窗口体验和标准 Windows 安装器。
+MiLuAssistantDesktop 是基于 MiLuAssistantWeb 改造的 Windows 桌面安装包版本。项目使用 Electron + electron-builder + NSIS 将 MiLu 的 Python 后端和 Web 控制台封装为原生 Windows 应用，提供更适合交付、演示和售卖的安装体验。
 
-## 架构
+## 项目关系
 
-```
-MiLuEXE/
-├── assets/              # 图标等资源
-├── scripts/
-│   ├── prepare-python-env.ps1   # 构建 conda-pack Python 环境
-│   └── dev-start.ps1            # 开发模式快捷配置
-├── src/
-│   ├── main.js          # Electron 主进程（管理后端生命周期 + BrowserWindow）
-│   ├── preload.js       # 预加载脚本（contextBridge）
-│   └── loading.html     # 等待后端启动的加载页
-├── python-env/          # 打包的 Python 环境（gitignored）
-├── package.json         # Electron + electron-builder 配置
-└── README.md
-```
+- **Web 基座**：[MiLuAssistantWeb](https://github.com/White-147/MiLuAssistantWeb)
+- **当前项目**：MiLuAssistantDesktop，负责桌面外壳、安装包、后端进程托管、托盘和用户数据隔离。
+- **改造目的**：将原本需要开发环境启动的前后端项目，封装为普通用户可以安装和双击运行的 Windows 应用。
 
-运行时流程：
-1. Electron 启动 → 显示 `loading.html`（加载动画）
-2. 后台启动 `python-env/python.exe -m milu app --port <随机空闲端口>`
-3. 轮询端口直到后端就绪
-4. `BrowserWindow.loadURL("http://127.0.0.1:<port>")` 加载 MiLu Web UI
-5. 关闭窗口 → 最小化到系统托盘；退出时自动终止后端进程
+## 运行流程
 
-## 快速开始（开发模式）
+1. Electron 启动后先显示 `src/loading.html`。
+2. 首次启动时执行 `python-env/python.exe -m milu init --defaults --accept-security` 初始化工作区。
+3. 自动寻找本机空闲端口，并启动 `python-env/python.exe -m milu app --host 127.0.0.1 --port <port>`。
+4. 后端就绪后，`BrowserWindow` 加载本地 Web UI。
+5. 关闭窗口时最小化到系统托盘，退出应用时自动结束后端进程。
+6. 用户数据隔离在 `%LOCALAPPDATA%\MiLuAssistantDesktop` 下。
 
-开发模式直接使用系统已安装的 MiLu Python 环境，无需 conda-pack：
+## 技术栈
+
+- **桌面端**：Electron、electron-builder、NSIS。
+- **后端运行时**：Windows embeddable Python、MiLu Python package。
+- **构建脚本**：PowerShell、Node.js、C# launcher / uninstaller。
+- **Web UI 来源**：MiLuAssistantWeb 的 Python 后端与前端控制台。
+
+## 本地开发
+
+先确保 MiLuAssistantWeb 已安装到当前 Python 环境：
 
 ```powershell
-# 1. 确保 MiLu 已安装到系统 Python
-cd D:\code\MiLu
+cd D:\code\MiLuAssistantWeb
 pip install -e .
+```
 
-# 2. 安装 Electron 依赖
-cd D:\code\MiLuEXE
+然后启动桌面壳：
+
+```powershell
+cd D:\code\MiLuAssistantDesktop
 npm install
-
-# 3. 配置开发模式
 powershell -ExecutionPolicy Bypass -File scripts\dev-start.ps1
-
-# 4. 启动
 npm start
 ```
 
 ## 构建安装包
 
 ```powershell
-# 1. 准备 Python 环境（conda-pack）
-powershell -ExecutionPolicy Bypass -File scripts\prepare-python-env.ps1
-
-# 2. 构建 NSIS 安装器
+cd D:\code\MiLuAssistantDesktop
+npm install
+powershell -ExecutionPolicy Bypass -File scripts\build-python-env.ps1
 npm run dist
-
-# 安装包输出到 release/ 目录
 ```
 
-## 图标
-
-将 `icon.ico`（256×256）放入 `assets/` 目录。可以使用在线工具将 SVG 转换为 ICO：
-
-```powershell
-# 源 SVG 在 MiLu 仓库：scripts/pack/assets/icon.svg
-# 推荐使用 https://convertio.co/svg-ico/ 或 ImageMagick:
-magick convert -background none icon.svg -define icon:auto-resize=256,128,64,48,32,16 icon.ico
-```
+安装包会输出到 `D:\code` 目录，文件名形如 `MiLuAssistantDesktop-Setup-<version>.exe`。
 
 ## 系统要求
 
-- **开发**: Node.js 18+, Python 3.10+, MiLu 已安装
-- **打包**: 以上 + conda, NSIS (makensis on PATH)
-- **运行**: Windows 10/11 x64
+- **开发**：Windows 10/11、Node.js 18+、Python 3.10+。
+- **构建**：需要可访问 Python 官方 embeddable package 下载地址。
+- **运行**：Windows 10/11 x64。
+
+## 说明
+
+本项目是 MiLuAssistantWeb 的安装包化延伸，不是新的后端业务系统。后续如果要开发新的 AI 漫剧生产项目，应使用独立仓库 `MiLuStudio`，避免与当前旧版 MiLu 助手项目混淆。
