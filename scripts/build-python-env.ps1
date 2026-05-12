@@ -9,9 +9,7 @@ $ErrorActionPreference = "Stop"
 
 $ProjectRoot = (Get-Item $PSScriptRoot).Parent.FullName
 $CandidateRoots = @(
-  "$ProjectRoot\..\MiLuAssistantWeb",
-  "$ProjectRoot\..\MiLu_HTML",
-  "$ProjectRoot\..\MiLu"
+    "$ProjectRoot\..\MiLuAssistantWeb"
 )
 $MiLuRoot = $CandidateRoots | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $MiLuRoot) {
@@ -97,10 +95,6 @@ Write-Host "[build] Installing MiLu from source (editable mode skipped, using di
 # Try to find a wheel first
 $Wheels = Get-ChildItem -Path (Join-Path $MiLuRoot "dist\milu-*.whl") -ErrorAction SilentlyContinue |
   Sort-Object LastWriteTime -Descending
-if (-not $Wheels -or $Wheels.Count -eq 0) {
-  $Wheels = Get-ChildItem -Path (Join-Path $MiLuRoot "dist\copaw-*.whl") -ErrorAction SilentlyContinue |
-    Sort-Object LastWriteTime -Descending
-}
 
 if ($Wheels -and $Wheels.Count -gt 0) {
   $WheelPath = $Wheels[0].FullName
