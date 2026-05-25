@@ -1,4 +1,25 @@
-# MiLuAssistantDesktop
+<p align="center">
+  <img src="./assets/icon.png" alt="MiLuAssistantDesktop icon" width="112">
+</p>
+
+<h1 align="center">MiLuAssistantDesktop</h1>
+
+<p align="center">基于 MiLuAssistantWeb 改造的 Windows 桌面安装包版本，使用 Electron 与 NSIS 封装本地 AI 助手运行体验。</p>
+
+<p align="center">
+  <a href="./README.md">简体中文</a> | <a href="./README.en.md">English</a>
+</p>
+
+<p align="center">
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Windows-0078D4?style=for-the-badge">
+  <img alt="Stack" src="https://img.shields.io/badge/stack-Electron%20%2B%20NSIS%20%2B%20Python-2E7D32?style=for-the-badge">
+  <img alt="Package" src="https://img.shields.io/badge/package-desktop%20installer-F59E0B?style=for-the-badge">
+  <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue?style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <img src="./docs/assets/screenshots/desktop-overview.png" alt="MiLuAssistantDesktop 运行界面截图" width="900">
+</p>
 
 MiLuAssistantDesktop 是基于 MiLuAssistantWeb 改造的 Windows 桌面安装包版本。项目使用 Electron + electron-builder + NSIS 将 MiLu 的 Python 后端和 Web 控制台封装为原生 Windows 应用，提供更适合交付、演示和售卖的安装体验。
 
