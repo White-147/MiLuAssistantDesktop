@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/icon.png" alt="MiLuAssistantDesktop icon" width="112">
+  <img src="./assets/logo.png" alt="MiLuAssistantDesktop logo" width="132">
 </p>
 
 <h1 align="center">MiLuAssistantDesktop</h1>

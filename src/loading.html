@@ -22,24 +22,17 @@
     -webkit-app-region: no-drag;
   }
   .logo {
-    width: 88px;
-    height: 88px;
+    width: 112px;
+    height: 84px;
     margin: 0 auto 28px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #7c5cfc 0%, #a78bfa 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 42px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -1px;
-    box-shadow: 0 8px 32px rgba(124, 92, 252, 0.35);
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 28px rgba(124, 92, 252, 0.28));
     animation: pulse 2s ease-in-out infinite;
   }
   @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(124, 92, 252, 0.35); }
-    50% { transform: scale(1.04); box-shadow: 0 12px 40px rgba(124, 92, 252, 0.5); }
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 28px rgba(124, 92, 252, 0.28)); }
+    50% { transform: scale(1.04); filter: drop-shadow(0 12px 36px rgba(124, 92, 252, 0.42)); }
   }
   h1 {
     font-size: 26px;
@@ -86,7 +79,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="logo">M</div>
+    <img class="logo" src="../assets/logo.png" alt="MiLu">
     <h1>MiLuAssistantDesktop</h1>
     <p id="status">正在启动...</p>
     <div class="progress-track"><div class="progress-bar"></div></div>
