@@ -69,10 +69,11 @@ npm start
 cd D:\code\MiLuAssistantDesktop
 npm install
 powershell -ExecutionPolicy Bypass -File scripts\build-python-env.ps1
+python scriptsuild-docs.py <docs 源 md> docs-dist   # 生成本地文档（或直接使用已生成的 docs-dist/）
 npm run dist   # 国内网络需先设置: set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
 ```
 
-安装包会输出到 `D:\code` 目录，文件名形如 `MiLuAssistantDesktop-Setup-<version>.exe`。
+安装包会输出到仓库内 `release/` 目录，文件名形如 `MiLuAssistantDesktop-Setup-<version>.exe`。
 
 ## 系统要求
 
