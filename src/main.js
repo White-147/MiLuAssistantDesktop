@@ -80,6 +80,13 @@ function buildBackendEnv() {
   env.PYTHONIOENCODING = "utf-8";
   env.MILU_WORKING_DIR = getWorkingDir();
   env.MILU_SECRET_DIR = getSecretDir();
+  // 启动提速：默认禁用重 SDK 频道（lark_oapi 19s+/telegram 等），只保留 console 界面频道。
+  // 如需启用某频道，移除对应 key 即可（也可在应用中配置）。
+  env.MILU_DISABLED_CHANNELS = [
+    "feishu", "telegram", "dingtalk", "discord", "mattermost",
+    "mqtt", "qq", "imessage", "weixin", "wecom", "xiaoyi",
+    "onebot", "matrix", "voice",
+  ].join(",");
   return env;
 }
 
