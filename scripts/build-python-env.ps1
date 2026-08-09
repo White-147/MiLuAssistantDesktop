@@ -115,7 +115,10 @@ if ($LASTEXITCODE -ne 0) { throw "MiLu verification failed" }
 
 # ── Step 7: Pre-compile in-place bytecode (-b flag) ──
 Write-Host "[build] Compiling .py -> in-place .pyc ..."
-& $PyExe -m compileall -b -q -j 0 $PythonEnv 2>$null
+# 忽略第三方包（如 modelscope）的 SyntaxWarning 打到 stderr 导致的 PowerShell 误报
+$env:PYTHONWARNINGS = "ignore"
+& $PyExe -m compileall -b -q -j 0 $PythonEnv 2>&1 | Out-Null
+Remove-Item Env:PYTHONWARNINGS -ErrorAction SilentlyContinue
 Write-Host "[build] In-place .pyc compilation done"
 
 # ── Step 8: Strip python-env for minimal size & fastest NSIS install ──
@@ -177,9 +180,9 @@ Get-ChildItem $SitePackages -Directory -Recurse -ErrorAction SilentlyContinue |
   Sort-Object { $_.FullName.Length } -Descending |
   Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
-# 8h. Clean pip cache
+# 8h. Clean pip cache（8d 已移除 pip，此处失败不影响产物，忽略输出）
 Write-Host "  [8h] Cleaning pip cache..."
-& $PyExe -m pip cache purge 2>$null
+& $PyExe -m pip cache purge 2>&1 | Out-Null
 
 $afterFiles = (Get-ChildItem $PythonEnv -Recurse -File -ErrorAction SilentlyContinue).Count
 $afterSize  = (Get-ChildItem $PythonEnv -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum

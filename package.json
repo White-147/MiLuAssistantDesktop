@@ -20,7 +20,7 @@
     "productName": "MiLuAssistantDesktop",
     "copyright": "Copyright © 2026 White-147",
     "directories": {
-      "output": "D:/code"
+      "output": "release"
     },
     "files": [
       "src/**/*",
