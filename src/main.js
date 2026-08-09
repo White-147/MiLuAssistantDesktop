@@ -143,6 +143,31 @@ function needsInit() {
   return !fs.existsSync(configPath);
 }
 
+// 补充初始化（skill_pool 等）：app 启动时 milu 会自动创建 config/workspace/agent，
+// 但 skill 库需要 init 补齐；init 对已存在的 config 是幂等的（不覆盖），
+// 因此在 UI 加载后后台补跑一次，避免首次启动串行等待。
+function ensureSkillPoolAsync() {
+  const skillPoolDir = path.join(getWorkingDir(), "skill_pool");
+  if (fs.existsSync(skillPoolDir)) return;
+  const pythonExe = getPythonExe();
+  const env = buildBackendEnv();
+  console.log("[MiLu] Background skill pool init...");
+  const proc = spawn(
+    pythonExe,
+    ["-u", "-m", "milu", "init", "--defaults", "--accept-security"],
+    {
+      cwd: getResourcePath(),
+      env,
+      stdio: ["ignore", "pipe", "pipe"],
+      windowsHide: true,
+    }
+  );
+  proc.stdout.on("data", (d) => { const l = d.toString().trim(); if (l) console.log(`[init:bg] ${l}`); });
+  proc.stderr.on("data", (d) => { const l = d.toString().trim(); if (l) console.error(`[init:bg:err] ${l}`); });
+  proc.on("exit", (code) => console.log(`[MiLu] background init exited with code ${code}`));
+  proc.on("error", (err) => console.error("[MiLu] background init spawn error:", err.message));
+}
+
 function runInitAsync() {
   return new Promise((resolve) => {
     const pythonExe = getPythonExe();
@@ -341,11 +366,8 @@ app.on("ready", async () => {
     backendPort = DEFAULT_PORT;
   }
 
-  if (needsInit()) {
-    updateLoadingStatus("首次启动，正在初始化环境...");
-    await runInitAsync();
-  }
-
+  // 秒开优化：milu app 在无 config 时会自动初始化（workspace/agent/config），
+  // 不再串行等待 runInitAsync；skill 库由 UI 加载后的后台 init 补齐。
   updateLoadingStatus("正在启动后端服务...");
   startElapsedUpdater("正在启动后端服务...");
   console.log(`[MiLu] Starting backend on port ${backendPort}...`);
@@ -362,6 +384,8 @@ app.on("ready", async () => {
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.loadURL(`http://${BACKEND_HOST}:${backendPort}`);
     }
+    // UI 加载后后台补齐 skill 库（幂等，不覆盖已有 config）
+    ensureSkillPoolAsync();
   } catch (err) {
     stopElapsedUpdater();
     console.error("[MiLu] Backend not ready:", err.message);

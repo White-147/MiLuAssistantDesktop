@@ -180,9 +180,12 @@ Get-ChildItem $SitePackages -Directory -Recurse -ErrorAction SilentlyContinue |
   Sort-Object { $_.FullName.Length } -Descending |
   Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
-# 8h. Clean pip cache（8d 已移除 pip，此处失败不影响产物，忽略输出）
+# 8h. Clean pip cache（8d 已移除 pip，此处失败不影响产物；临时关闭 ErrorActionPreference 避免 NativeCommandError）
 Write-Host "  [8h] Cleaning pip cache..."
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 & $PyExe -m pip cache purge 2>&1 | Out-Null
+$ErrorActionPreference = $prevEAP
 
 $afterFiles = (Get-ChildItem $PythonEnv -Recurse -File -ErrorAction SilentlyContinue).Count
 $afterSize  = (Get-ChildItem $PythonEnv -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum
