@@ -4,6 +4,7 @@ app/
 docs-dist/
 release/
 build/
+!build/installer.nsh
 .dev-mode
 *.log
 dist/
